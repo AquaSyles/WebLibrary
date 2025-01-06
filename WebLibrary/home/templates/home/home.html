@@ -1,0 +1,26 @@
+{% extends 'home/base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron fade-in" style="background-color: rgba(150, 210, 240, 0.8); z-index: 10; position: relative;">
+        <h1 class="display-4 text-center" style="font-family: 'Courier New', Courier, monospace; color: #2c3e50; text-shadow: 2px 2px #ecf0f1;">Hello, {{ user.username }}</h1>
+</div>
+
+<div class="fun-animation"></div>
+<div class="fun-animation"></div>
+<div class="fun-animation"></div>
+<div class="fun-animation"></div>
+<div class="fun-animation"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

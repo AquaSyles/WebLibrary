@@ -1,0 +1,24 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fun-animation {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+    position: absolute;
+    transition: all 2s ease;
+}
+
+.star {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
