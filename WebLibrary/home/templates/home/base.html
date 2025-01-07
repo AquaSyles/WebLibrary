@@ -28,9 +28,18 @@
                     <a class="nav-link" href="#" style="color: #ecf0f1; font-size: 1.2rem;">Rentals</a>
                 </li>
                 {% endif %}
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logout' %}" style="color: #ecf0f1; font-size: 1.2rem;">Logout</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}" style="color: #ecf0f1; font-size: 1.2rem;">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}" style="color: #ecf0f1; font-size: 1.2rem;">Register</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>
