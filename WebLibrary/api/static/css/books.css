@@ -1,0 +1,12 @@
+.book-card {
+    margin-bottom: 20px;
+}
+.book-cover {
+    min-height: 200px;
+    min-width: 150px;
+    max-height: 200px;
+    max-width: 150px;
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+}

@@ -1,24 +1,16 @@
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    background-color: #a3c9f1;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-}
+
 
 body {
-    font-family: 'Courier New', Courier, monospace;
-    background: radial-gradient(circle, #a3c9f1, #d4e4f7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
     margin: 0;
     overflow: hidden;
+}
+
+.login-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
 }
 
 .login-container {

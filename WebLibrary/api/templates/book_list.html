@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Books</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .book-card {
-            margin-bottom: 20px;
-        }
-        .book-cover {
-            max-height: 200px;
-            object-fit: cover;
-        }
-    </style>
-</head>
-<body>
+{% extends 'home/base.html' %}
+
+{% load static %}
+
+{% block title %}Books{% endblock %}
+{% block styles %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/books.css' %}">
+{% endblock %}
+
+{% block content %}
     <div class="container mt-5">
         <h1 class="text-center">Books</h1>
         <div class="row">
@@ -21,7 +16,9 @@
             <div class="col-md-4">
                 <div class="card book-card">
                     {% if book.cover %}
-                    <img src="{{ book.cover.url }}" class="card-img-top book-cover" alt="{{ book.title }} cover">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <img src="{{ book.cover.url }}" class="card-img-top book-cover" alt="{{ book.title }} cover">
+                    </div>
                     {% else %}
                     <img src="https://via.placeholder.com/150" class="card-img-top book-cover" alt="No cover available">
                     {% endif %}
@@ -265,5 +262,6 @@
             });
         });
     </script>
+{% endblock %}
 </body>
 </html>
