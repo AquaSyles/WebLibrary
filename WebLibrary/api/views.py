@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from .models import Book, Rental
+from django.contrib.auth.models import User
 from .forms import BookForm, RentalForm
 from django.http import JsonResponse
 import logging
@@ -18,12 +19,21 @@ def rental_list(request):
 @csrf_exempt
 def create_rental(request):
     if request.method == 'POST':
-        print(request.POST)
         form = RentalForm(request.POST)
-        print(form)
         if form.is_valid():
-            print("VALID")
-            form.save()
+            # manually getting the user and book objects from the request
+            instance = form.save(commit=False)
+            try:
+                instance.user = User.objects.get(id=request.POST.get('user'))
+                print(f"User: {instance.user}")
+                instance.book = Book.objects.get(id=request.POST.get('book'))
+                print(f"Book: {instance.book}")
+
+                form.save()
+                print(f"Rental created")
+            except:
+                return JsonResponse({'error': 'Invalid user or book'}, status=400)
+
 
 @csrf_exempt
 def create_book(request):

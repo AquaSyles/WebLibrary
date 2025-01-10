@@ -4,10 +4,10 @@ from django.contrib.auth.models import User
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
-    published_date = models.DateField(null=True, blank=True)
+    published_date = models.DateField()
     isbn = models.CharField(max_length=13, unique=True)
-    pages = models.IntegerField(null=True, blank=True)
-    cover = models.ImageField(upload_to='covers/', null=True, blank=True)
+    pages = models.IntegerField()
+    cover = models.ImageField(upload_to='covers/')
     language = models.CharField(max_length=50)
     stock = models.IntegerField()
 
@@ -16,8 +16,8 @@ class Book(models.Model):
 
 class Rental(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    rented_date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rented_date = models.DateField(auto_now_add=True)
     return_date = models.DateField()
 
     def __str__(self):

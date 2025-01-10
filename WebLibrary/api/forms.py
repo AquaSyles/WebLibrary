@@ -20,7 +20,4 @@ class BookForm(forms.ModelForm):
 class RentalForm(forms.ModelForm):
     class Meta:
         model = Rental
-        fields = ['book', 'user', 'rented_date', 'return_date']
-
-    user = forms.ModelChoiceField(queryset=User.objects.all())
-    book = forms.ModelChoiceField(queryset=Book.objects.all())
+        fields = ['return_date']
