@@ -1,5 +1,6 @@
 from django import forms
-from .models import Book
+from .models import Book, Rental
+from django.contrib.auth.models import User
 
 class BookForm(forms.ModelForm):
     class Meta:
@@ -15,3 +16,11 @@ class BookForm(forms.ModelForm):
             if Book.objects.filter(isbn=isbn).exists():
                 raise forms.ValidationError("A book with this ISBN already exists.")
         return isbn
+
+class RentalForm(forms.ModelForm):
+    class Meta:
+        model = Rental
+        fields = ['book', 'user', 'rented_date', 'return_date']
+
+    user = forms.ModelChoiceField(queryset=User.objects.all())
+    book = forms.ModelChoiceField(queryset=Book.objects.all())

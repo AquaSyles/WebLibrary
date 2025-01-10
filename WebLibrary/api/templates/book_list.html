@@ -32,6 +32,9 @@
                         <p class="card-text"><strong>Stock:</strong> {{ book.stock }}</p>
                         <div class="d-flex justify-content-between">
                             <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateBookModal{{ book.id }}">Update</a>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#rentBookModal{{ book.id }}">
+                                Rent
+                            </button>
                             <a href="#" class="btn btn-danger btn-sm" onclick="deleteBook({{ book.id }})">Delete</a>
                         </div>
                     </div>
@@ -75,12 +78,6 @@
                                 </div>
                                 <div class="form-row book-size">
                                     <div class="form-group col-md-4">
-                                        <label for="stock-{{ book.id }}">Stock</label>
-                                        <input type="number" class="form-control" id="stock-{{ book.id }}" name="stock" value="{{ book.stock }}" required>
-                                    </div>
-                                </div>
-                                <div class="form-row book-size">
-                                    <div class="form-group col-md-4">
                                         <label for="pages-{{ book.id }}">Pages</label>
                                         <input type="number" class="form-control" id="pages-{{ book.id }}" name="pages" value="{{ book.pages }}" required>
                                     </div>
@@ -99,6 +96,40 @@
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="rentBookModal{{ book.id }}" tabindex="-1" role="dialog" aria-labelledby="rentBookModalLabel{{ book.id }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rentBookModalLabel{{ book.id }}">Rent {{ book.title }}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="rent-book-form-{{ book.id }}" class="rent-book-form" onsubmit="submitRentalForm(event, {{ book.id }})">
+                                <div class="form-group">
+                                    <label for="book-id-{{ book.id }}">Book ID</label>
+                                    <input type="text" class="form-control" id="book-{{ book.id }}" name="book" value="{{ book.id }}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="user-{{ book.id }}">User</label>
+                                    <input type="text" class="form-control" id="user-{{ book.id }}" name="user" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rental-date-{{ book.id }}">Rental Date</label>
+                                    <input type="date" class="form-control" id="rented-date-{{ book.id }}" name="rented_date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="return-date-{{ book.id }}">Return Date</label>
+                                    <input type="date" class="form-control" id="return-date-{{ book.id }}" name="return_date" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Rent</button>
                             </form>
                         </div>
                     </div>
@@ -261,6 +292,41 @@
                 nextSibling.innerText = fileName;
             });
         });
+
+        function submitRentalForm(event, bookId) {
+            event.preventDefault();
+            const form = document.getElementById(`rent-book-form-${bookId}`);
+            const formData = new FormData(form);
+
+            console.log('Submitting rental form for book ID:', bookId);
+            for (let [key, value] of formData.entries()) {
+                console.log(key, value);
+            }
+
+            fetch('/api/create_rental/', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response from server:', data);
+                if (data.success) {
+                    alert('Rental created successfully!');
+                    $(`#rentBookModal${bookId}`).modal('hide');
+                } else {
+                    alert('Failed to create rental: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while creating the rental: ' + error.message);
+            });
+        }
     </script>
 {% endblock %}
 </body>

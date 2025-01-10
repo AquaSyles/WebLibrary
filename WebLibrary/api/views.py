@@ -1,23 +1,29 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from .models import Book, Rental
-from .forms import BookForm
+from .forms import BookForm, RentalForm
 from django.http import JsonResponse
 import logging
 
 logger = logging.getLogger(__name__)
 
 def book_list(request):
-    default_published_date = '2023-01-01'  # Example default date
     books = Book.objects.all()
-    return render(request, 'book_list.html', {
-        'books': books,
-        'default_published_date': default_published_date,
-    })
+    return render(request, 'book_list.html', {'books': books})
 
 def rental_list(request):
     rentals = Rental.objects.all()
     return render(request, 'rental_list.html', {'rentals': rentals})
+
+@csrf_exempt
+def create_rental(request):
+    if request.method == 'POST':
+        print(request.POST)
+        form = RentalForm(request.POST)
+        print(form)
+        if form.is_valid():
+            print("VALID")
+            form.save()
 
 @csrf_exempt
 def create_book(request):
