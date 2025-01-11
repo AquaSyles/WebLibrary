@@ -4,14 +4,60 @@
 
 {% block title %}Rentals{% endblock %}
 
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/rental.css' %}">
+{% endblock %}
+
 {% block content %}
-{% for rental in rentals %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ rental.book.title }}</h5>
-            <p class="card-text">Rented by {{ rental.user }}: {{ rental.rented_date }}</p>
-            <p class="card-text">Due date: {{ rental.return_date }}</p>
-        </div>
+<table class="table">
+    <div class="d-flex justify-content-center my-3">
+        <input type="text" class="form-control w-50" placeholder="Search" id="search" onkeyup="searchTable()">
     </div>
-{% endfor %}
+    <thead>
+        <tr>
+            <th scope="col" class="head">Title</th>
+            <th scope="col" class="head">Rented By</th>
+            <th scope="col" class="head">Rented Date</th>
+            <th scope="col" class="head">Due Date</th>
+        </tr>
+    </thead>
+    <tbody class="table-body">
+        {% for rental in rentals %}
+        <tr>
+            <td class="title">{{ rental.book.title }}</td>
+            <td class="user">{{ rental.user }}</td>
+            <td class="rented_date">{{ rental.rented_date }}</td>
+            <td class="return_date">{{ rental.return_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    function searchTable() {
+        input = document.getElementById("search").value;
+        lowerCaseInput = input.toLowerCase();
+
+        table = document.getElementsByClassName("table-body")[0];
+        tableRow = table.getElementsByTagName("tr");
+        for (i = 0; i < tableRow.length; i++) {
+            titleColumn = tableRow[i].getElementsByTagName("td")[0];
+            userColumn = tableRow[i].getElementsByTagName("td")[1];
+            rentedDateColumn = tableRow[i].getElementsByTagName("td")[2];
+            returnDateColumn = tableRow[i].getElementsByTagName("td")[3];
+
+            titleText = titleColumn.innerText;
+            userText = userColumn.innerText;
+            rentedDateText = rentedDateColumn.innerText;
+            returnDateText = returnDateColumn.innerText;
+
+            if (titleText.toLowerCase().includes(lowerCaseInput) || userText.toLowerCase().includes(lowerCaseInput) || rentedDateText.toLowerCase().includes(lowerCaseInput) || returnDateText.toLowerCase().includes(lowerCaseInput)) {
+                tableRow[i].style.display = "";
+            } else {
+                tableRow[i].style.display = "none";
+            }
+
+        }
+    }
+</script>
 {% endblock %}
