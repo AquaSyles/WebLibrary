@@ -9,6 +9,7 @@ class BookForm(forms.ModelForm):
 
     def clean_isbn(self):
         isbn = self.cleaned_data.get('isbn')
+        # we have to check if it already has a primary key if we want to update
         if self.instance.pk:
             if Book.objects.filter(isbn=isbn).exclude(pk=self.instance.pk).exists():
                 raise forms.ValidationError("A book with this ISBN already exists.")

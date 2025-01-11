@@ -11,6 +11,12 @@ class Book(models.Model):
     language = models.CharField(max_length=50)
     stock = models.IntegerField()
 
+    # Overriding the delete method so it deletes the media file as well
+    def delete(self, *args, **kwargs):
+        if self.cover:
+            self.cover.delete(save=False)
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
