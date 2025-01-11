@@ -5,5 +5,13 @@
 {% block title %}Rentals{% endblock %}
 
 {% block content %}
-
+{% for rental in rentals %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ rental.book.title }}</h5>
+            <p class="card-text">Rented by {{ rental.user }}: {{ rental.rented_date }}</p>
+            <p class="card-text">Due date: {{ rental.return_date }}</p>
+        </div>
+    </div>
+{% endfor %}
 {% endblock %}

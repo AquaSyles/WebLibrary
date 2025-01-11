@@ -18,7 +18,6 @@ def rental_list(request):
     rentals = Rental.objects.all()
     return render(request, 'rental_list.html', {'rentals': rentals})
 
-@csrf_exempt
 def create_rental(request):
     if request.method == 'POST':
         form = RentalForm(request.POST)
@@ -62,7 +61,7 @@ def update_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     book_cover_name = book.cover.name
     book_cover_name = book_cover_name.replace('/', '\\')
-    
+
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
