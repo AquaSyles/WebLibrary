@@ -119,7 +119,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="user-{{ book.id }}">User</label>
-                                    <input type="text" class="form-control" id="user-{{ book.id }}" name="user" required>
+                                    <input list="user-list" type="text" class="form-control" id="user-{{ book.id }}" name="user" required>
+                                    {% for user in users %}
+                                    {% endfor %}
+                                    <datalist id="user-list">
+                                    {% for user in users %}
+                                    <option value="{{user}}"></option>
+                                    {% endfor %}
+                                    </datalist>
                                 </div>
                                 <div class="form-group">
                                     <label for="return-date-{{ book.id }}">Return Date</label>

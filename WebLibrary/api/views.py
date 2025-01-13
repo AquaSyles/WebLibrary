@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 
 def book_list(request):
     books = Book.objects.all()
-    return render(request, 'book_list.html', {'books': books})
+    users = User.objects.all()
+    return render(request, 'book_list.html', {'books': books, 'users': users})
 
 def rental_list(request):
     rentals = Rental.objects.all()
@@ -25,7 +26,7 @@ def create_rental(request):
             # manually getting the user and book objects from the request
             instance = form.save(commit=False)
             try:
-                instance.user = User.objects.get(id=request.POST.get('user'))
+                instance.user = User.objects.get(username=request.POST.get('user'))
                 print(f"User: {instance.user}")
                 instance.book = Book.objects.get(id=request.POST.get('book'))
                 print(f"Book: {instance.book}")
