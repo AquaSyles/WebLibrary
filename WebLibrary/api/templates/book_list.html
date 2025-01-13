@@ -29,13 +29,13 @@
                         <p class="card-text"><strong>ISBN:</strong> {{ book.isbn }}</p>
                         <p class="card-text"><strong>Pages:</strong> {{ book.pages }}</p>
                         <p class="card-text"><strong>Language:</strong> {{ book.language }}</p>
-                        <p class="card-text"><strong>Stock:</strong> {{ book.stock }}</p>
+                        <p class="card-text" id="card-stock"><strong>Stock:</strong> {{ book.stock }}</p>
                         <div class="d-flex justify-content-between">
+                            {% if user.is_staff %}
                             <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateBookModal{{ book.id }}">Update</a>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#rentBookModal{{ book.id }}">
-                                Rent
-                            </button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#rentBookModal{{ book.id }}">Rent</button>
                             <a href="#" class="btn btn-danger btn-sm" onclick="deleteBook({{ book.id }})">Delete</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,9 @@
             {% endfor %}
         </div>
         <div class="text-center mt-4">
+            {% if user.is_staff %}
             <button id="create-book-btn" class="btn btn-success">Create New Book</button>
+            {% endif %}
         </div>
         <form id="create-book-form" class="mt-4" style="display: none;">
             <div class="card">
@@ -303,7 +305,7 @@
 
             console.log('Submitting rental form for book ID:', bookId);
             for (let [key, value] of formData.entries()) {
-                console.log(key, value);
+                console.log(key, ':', value);
             }
 
             fetch('/api/create_rental/', {
@@ -321,13 +323,13 @@
             })
             .then(data => {
                 console.log('Response from server:', data);
-                console.log('data: ', data.status)
                 if (data.status == 200) {
                     alert('Rental created successfully!');
-                    $(`#rentBookModal${bookId}`).modal('hide')
-                    $('.modal-backdrop').remove();
+
+                    location.reload();
+
                 } else {
-                    alert('Failed to create rental: ' + (data.message || 'Unknown error'));
+                    alert('Failed to create rental: ' + data.error);
                 }
             })
             .catch(error => {

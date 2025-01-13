@@ -31,6 +31,14 @@ def create_rental(request):
                 instance.book = Book.objects.get(id=request.POST.get('book'))
                 print(f"Book: {instance.book}")
 
+                print(instance.book.stock)
+                if not instance.book.stock > 0:
+                    return JsonResponse({'error': 'Stock is empty', 'status': 400})
+
+                book = Book.objects.get(id=request.POST.get('book'))
+                book.stock -= 1
+                book.save()
+
                 form.save()
                 print(f"Rental created")
             
