@@ -239,7 +239,7 @@
         function deleteBook(bookId) {
             if (confirm('Are you sure you want to delete this book?')) {
                 fetch(`/api/delete_book/${bookId}/`, {
-                    method: 'POST',
+                    method: 'DELETE',
                     headers: {
                         'X-CSRFToken': '{{ csrf_token }}'
                     }

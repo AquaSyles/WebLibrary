@@ -10,17 +10,17 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-def book_list(request):
-    books = Book.objects.all()
-    users = User.objects.all()
-    return render(request, 'book_list.html', {'books': books, 'users': users})
+
 
 def rental_list(request):
-    rentals = Rental.objects.all()
-    return render(request, 'rental_list.html', {'rentals': rentals})
+    if request.user.is_staff:
+        rentals = Rental.objects.all()
+        return render(request, 'rental_list.html', {'rentals': rentals})
+    else:
+        return get_object_or_404(Book, pk=0)
 
 def create_rental(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_staff:
         form = RentalForm(request.POST)
         if form.is_valid():
             # manually getting the user and book objects from the request
@@ -31,7 +31,6 @@ def create_rental(request):
                 instance.book = Book.objects.get(id=request.POST.get('book'))
                 print(f"Book: {instance.book}")
 
-                print(instance.book.stock)
                 if not instance.book.stock > 0:
                     return JsonResponse({'error': 'Stock is empty', 'status': 400})
 
@@ -46,9 +45,24 @@ def create_rental(request):
             except:
                 return JsonResponse({'error': 'Invalid user or book', 'status': 400})
 
+def delete_rental(request, rental_id):
+    print('test delete rental')
+    if request.method == 'DELETE' and request.user.is_staff:        
+        rental = get_object_or_404(Rental, id=rental_id)
+        rental.delete()
+        return JsonResponse({'message': 'Rental deleted successfully', 'status': 200})
+
+
+def book_list(request):
+    if request.user.is_authenticated:
+        books = Book.objects.all()
+        users = User.objects.all()
+        return render(request, 'book_list.html', {'books': books, 'users': users})
+    else:
+        return get_object_or_404(Book, pk=0)
 
 def create_book(request):
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_staff:
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             try:
@@ -61,17 +75,17 @@ def create_book(request):
             return JsonResponse({'error': form.errors.as_json(), 'status': 400})
 
 def delete_book(request, book_id):
-    if request.method == 'POST':
+    if request.method == 'DELETE' and request.user.is_staff:
         book = get_object_or_404(Book, id=book_id)
         book.delete()
         return JsonResponse({'message': 'Book deleted successfully', 'status': 200})
 
 def update_book(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
-    book_cover_name = book.cover.name
-    book_cover_name = book_cover_name.replace('/', '\\')
+    if request.method == 'POST' and request.user.is_staff:
+        book = get_object_or_404(Book, id=book_id)
+        book_cover_name = book.cover.name
+        book_cover_name = book_cover_name.replace('/', '\\')
 
-    if request.method == 'POST':
         form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
             # Delete the old cover if a new one is sent

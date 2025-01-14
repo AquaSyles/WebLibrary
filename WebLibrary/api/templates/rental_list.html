@@ -28,6 +28,8 @@
             <td class="user">{{ rental.user }}</td>
             <td class="rented_date">{{ rental.rented_date }}</td>
             <td class="return_date">{{ rental.return_date }}</td>
+            <td class="rental_id" style="display: none;">{{ rental.id }}</td>
+            <td class="delete_button"><button class="btn btn-danger" onclick="deleteRental({{ rental.id }})">Delete</button></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -58,6 +60,24 @@
             }
 
         }
+    }
+
+    function deleteRental(rental_id) {
+        fetch(`/api/delete_rental/${rental_id}/`, {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+            location.reload();
+            } else {
+            alert('Failed to delete rental.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
     }
 </script>
 {% endblock %}

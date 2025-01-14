@@ -23,9 +23,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'book_list' %}" style="color: #ecf0f1; font-size: 1.2rem;">Books</a>
                 </li>
+                {% endif %}
                 {% if user.is_staff %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'rental_list' %}" style="color: #ecf0f1; font-size: 1.2rem;">Rentals</a>
