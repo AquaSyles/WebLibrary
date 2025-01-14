@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block content %}
-<table class="table">
+<div class="container">
+    <table class="table">
     <div class="d-flex justify-content-center my-3">
-        <input type="text" class="form-control w-50" placeholder="Search" id="search" onkeyup="searchTable()">
+        <input type="text" class="form-control w-100" placeholder="Search" id="search" onkeyup="searchTable()">
     </div>
     <thead>
         <tr>
@@ -34,6 +35,7 @@
         {% endfor %}
     </tbody>
 </table>
+</div>
 
 <script>
     function searchTable() {
