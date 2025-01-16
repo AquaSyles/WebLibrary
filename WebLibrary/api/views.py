@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.csrf import csrf_exempt
 from .models import Book, Rental
 from django.contrib.auth.models import User
 from .forms import BookForm, RentalForm
@@ -46,12 +45,39 @@ def create_rental(request):
                 return JsonResponse({'error': 'Invalid user or book', 'status': 400})
 
 def delete_rental(request, rental_id):
-    print('test delete rental')
     if request.method == 'DELETE' and request.user.is_staff:        
         rental = get_object_or_404(Rental, id=rental_id)
+        book = Book.objects.get(id=rental.book.id)  
+
+        book.stock += 1
+        book.save()
         rental.delete()
         return JsonResponse({'message': 'Rental deleted successfully', 'status': 200})
 
+def search_book(request):
+    if request.user.is_authenticated:
+        query = request.GET.get('query')
+
+        title_books = Book.objects.filter(title__icontains=query)       
+        author_books = Book.objects.filter(author__icontains=query)
+
+        books = []
+
+        for book in author_books:
+            books.append(book)
+
+        for book in title_books:
+            if book not in author_books:
+                books.append(book)
+
+        if books:
+            users = User.objects.all()
+            return render(request, 'book_list.html', {'books': books, 'users': users})
+
+        else:
+            return JsonResponse({'error': 'No books found with the query', 'status': 400})
+    else:
+        return get_object_or_404(Book, pk=0)
 
 def book_list(request):
     if request.user.is_authenticated:

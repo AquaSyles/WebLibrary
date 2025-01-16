@@ -10,7 +10,13 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h1 class="text-center">Books</h1>
+        <div class="top text-center">
+            <h1>Books</h1>
+            <form action="/api/search_book" method="get">
+                <input type="text" name="query" id="searchbar" class="form-control w-50 mx-auto" placeholder="Search for book...">
+                <button type="submit" class="btn btn-primary mt-3">Search</button>
+            </form>
+        </div>
         <div class="row">
             {% for book in books %}
             <div class="col-md-4">
@@ -337,6 +343,24 @@
                 alert('An error occurred while creating the rental: ' + error.message);
             });
         }
+
+        // function searchBooks() {
+        //     console.log('Searching')
+        //     query = document.getElementById('searchbar').value
+            
+        //     fetch(`/api/search_book/?query=${query}`, {
+        //         method: 'GET',
+        //     })
+        //     .then(response => {return response.json()})
+        //     .then(data => {
+        //         if (data.status == 200) {
+        //             console.log(data.data)
+        //         }
+        //         else {
+        //             alert('Error: ', data.error)
+        //         }
+        //     })
+        // }
     </script>
 {% endblock %}
 </body>
