@@ -18,16 +18,16 @@ WebLibrary is a web-based application designed to manage and organize a library 
 
 ## Installation
 
-1. (Optional) Create and activate a virtual environment:
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/AquaSyles/WebLibrary.git
+   cd WebLibrary
+   ```
+
+2. (Optional) Create and activate a virtual environment:
    ```sh
    python -m venv venv
    . venv/bin/activate  # On Windows, use `. venv\Scripts\activate`
-   ```
-
-2. Clone the repository:
-   ```sh
-   cd WebLibrary
-   git clone https://github.com/AquaSyles/WebLibrary.git
    ```
 
 3. Install the dependencies:
