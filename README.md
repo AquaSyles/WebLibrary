@@ -51,3 +51,8 @@ WebLibrary is a web-based application designed to manage and organize a library 
    ```sh
    python manage.py runserver
    ```
+
+## Setting up an administrator:
+   ```sh
+   python manage.py createsuperuser # fill in username and password, which you can now use to login, and it also grants you post permissions.
+   ```
