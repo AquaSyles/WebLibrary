@@ -26,8 +26,8 @@ WebLibrary is a web-based application designed to manage and organize a library 
 
 2. Clone the repository:
    ```sh
-   git clone https://github.com/AquaSyles/WebLibrary.git
    cd WebLibrary
+   git clone https://github.com/AquaSyles/WebLibrary.git
    ```
 
 3. Install the dependencies:
